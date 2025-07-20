@@ -35,15 +35,9 @@ function App() {
 
       {/* Task 2 components */}
       <Header />
+      <UserProfile name= "Lorretta" age={25} bio="Aspiring Front-End Developer" />
       <MainContent /> 
       <Footer />
-
-      {/* Task 3: User Profile */}
-      <UserProfile
-        name="Lauretta"
-        age="25"
-        bio="Frontend developer in training a ALX"
-      />
     </div>
   );
 }

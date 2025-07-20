@@ -1,7 +1,9 @@
+import React from 'react';
+
 function MainContent() {
   return (
-    <main>
-      <p>I love to visit New York, Paris, and Tokyo.</p>
+    <main style={{ backgroundColor: '#f4f4f4', padding: '20px', fontSize: '18px' }}>
+      <p>This is the main content section of the app.</p>
     </main>
   );
 }
