@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -7,45 +7,63 @@ function Contact() {
     message: ''
   });
 
+  const [submitted, setSubmitted] = useState(false);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Form submitted!');
+    console.log('Form submitted:', formData);
+    setSubmitted(true);
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Contact Us</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={handleChange}
-          style={{ display: 'block', margin: '10px 0' }}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={formData.email}
-          onChange={handleChange}
-          style={{ display: 'block', margin: '10px 0' }}
-        />
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          value={formData.message}
-          onChange={handleChange}
-          style={{ display: 'block', margin: '10px 0' }}
-        />
-        <button type="submit">Send Message</button>
-      </form>
+    <div style={{ padding: '2rem' }}>
+      <h2>Contact Us</h2>
+      {!submitted ? (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Name:</label><br />
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Email:</label><br />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Message:</label><br />
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" style={{ marginTop: '1rem' }}>Send</button>
+        </form>
+      ) : (
+        <p>Thank you for reaching out! We'll get back to you soon.</p>
+      )}
     </div>
   );
 }
+
 export default Contact;
