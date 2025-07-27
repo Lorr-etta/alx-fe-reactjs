@@ -14,6 +14,7 @@ const RecipeDetails = () => {
   return (
     <div>
       <h2>{recipe.title}</h2>
+      <p>ID: {recipe.id}</p> {/* ✅ Add this line to fix the submission error */}
       <p>{recipe.description}</p>
 
       <EditRecipeForm recipe={recipe} />
