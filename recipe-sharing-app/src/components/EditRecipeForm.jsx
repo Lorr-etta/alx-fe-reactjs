@@ -7,8 +7,15 @@ const EditRecipeForm = ({ recipe }) => {
   const updateRecipe = useRecipeStore((state) => state.updateRecipe);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    updateRecipe(recipe.id, { title, description });
+    e.preventDefault(); // ✅ Fixed the bug here
+
+    updateRecipe({
+      id: recipe.id,
+      title,
+      description,
+    });
+
+    alert('Recipe updated!');
   };
 
   return (
@@ -18,11 +25,13 @@ const EditRecipeForm = ({ recipe }) => {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        placeholder="Title"
       />
       <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-      />
+        placeholder="Description"
+      ></textarea>
       <button type="submit">Update</button>
     </form>
   );
