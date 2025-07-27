@@ -3,15 +3,24 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-// ✅ Import the components
+// 🧠 React Router
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from 'react-router-dom'
+
+// ✅ Import components
 import RecipeList from './components/RecipeList'
 import AddRecipeForm from './components/AddRecipeForm'
+import RecipeDetails from './components/RecipeDetails'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
+    <Router>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -25,19 +34,21 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <p>Edit <code>src/App.jsx</code> and save to test HMR</p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
 
-      {/* ✅ AddRecipeForm and RecipeList Components */}
-      <h2>Recipe Sharing App</h2>
-      <AddRecipeForm />
-      <RecipeList />
-    </>
+      {/* Navigation */}
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/add">Add Recipe</Link>
+      </nav>
+
+      {/* Routing Logic */}
+      <Routes>
+        <Route path="/" element={<RecipeList />} />
+        <Route path="/add" element={<AddRecipeForm />} />
+        <Route path="/recipe/:id" element={<RecipeDetails />} />
+      </Routes>
+    </Router>
   )
 }
 
