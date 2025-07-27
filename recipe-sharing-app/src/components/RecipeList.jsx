@@ -1,27 +1,24 @@
 import React from 'react';
-import { useRecipeStore } from './recipeStore';
-import { Link } from 'react-router-dom'; //  required import
+import { useRecipeStore } from '../store/recipeStore'; // ✅ make sure path is correct
 
-const RecipeList = () => {
-  const recipes = useRecipeStore((state) => state.filteredRecipes.length > 0 ? state.filteredRecipes : state.recipes);
-
-  if (recipes.length === 0) {
-    return <p>No recipes found.</p>;
-  }
+const RecommendationsList = () => {
+  const recommendations = useRecipeStore(state => state.recommendations); // ✅ useRecipeStore
 
   return (
     <div>
-      <h2>Recipes</h2>
-      <ul>
-        {recipes.map((recipe) => (
-          <li key={recipe.id}>
-            {/*  Make each recipe clickable */}
-            <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
-          </li>
-        ))}
-      </ul>
+      <h2>Recommended Recipes</h2>
+      {recommendations.length === 0 ? (
+        <p>No recommendations yet.</p>
+      ) : (
+        recommendations.map(recipe => ( // ✅ map usage
+          <div key={recipe.id}>
+            <h3>{recipe.title}</h3>
+            <p>{recipe.description}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
 
-export default RecipeList;
+export default RecommendationsList;
