@@ -69,7 +69,7 @@ function Search() {
       </form>
 
       {loading && <p className="mt-4 text-gray-600">Loading...</p>}
-      {error && <p className="mt-4 text-red-600">Looks like we can't find the user.</p>}
+      {error && <p className="mt-4 text-red-600">Looks like we cant find the user.</p>}
 
       {userResults.length > 0 && (
         <div className="mt-6 space-y-6">
@@ -89,7 +89,7 @@ function Search() {
                     <p className="text-sm text-gray-500"> {user.location}</p>
                   )}
                   <p className="text-sm text-gray-500">
-                    🗂 Public Repositories: {user.public_repos}
+                    Public Repositories: {user.public_repos}
                   </p>
                   <a
                     href={user.html_url}
