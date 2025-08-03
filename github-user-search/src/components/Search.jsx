@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { fetchUserData } from '../services/githubService';
+import { fetchUsersAdvanced } from '../services/githubService';
 
 function Search() {
   const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
+  const [userResults, setUserResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -11,11 +13,11 @@ function Search() {
     e.preventDefault();
     setLoading(true);
     setError(false);
-    setUserData(null);
+    setUserResults([]);
 
     try {
-      const data = await fetchUserData(username);
-      setUserData(data);
+      const results = await fetchUsersAdvanced({ username, location, minRepos });
+      setUserResults(results);
     } catch (err) {
       setError(true);
     } finally {
@@ -24,26 +26,72 @@ function Search() {
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-2xl mx-auto p-6 text-center">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-md">
         <input
           type="text"
-          placeholder="Enter GitHub username"
+          placeholder="GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md"
         />
-        <button type="submit">Search</button>
+        <input
+          type="text"
+          placeholder="Location (e.g. San Francisco)"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md"
+        />
+        <input
+          type="number"
+          placeholder="Min Repositories"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-md"
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+        >
+          Search
+        </button>
       </form>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>Looks like we cant find the user.</p>}
-      {userData && (
-        <div style={{ marginTop: '20px' }}>
-          <img src={userData.avatar_url} alt="avatar" width={100} />
-          <h2>{userData.name || userData.login}</h2>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-            Visit GitHub Profile
-          </a>
+      {loading && <p className="mt-4 text-gray-600">Loading...</p>}
+      {error && <p className="mt-4 text-red-600">Looks like we can't find any users.</p>}
+
+      {userResults.length > 0 && (
+        <div className="mt-6 space-y-6">
+          {userResults.map((user) => (
+            <div key={user.id} className="p-4 border rounded-md shadow text-left">
+              <div className="flex items-center space-x-4">
+                <img
+                  src={user.avatar_url}
+                  alt="avatar"
+                  width={80}
+                  className="rounded-full"
+                />
+                <div>
+                  <h2 className="text-lg font-semibold">{user.name || user.login}</h2>
+                  <p className="text-sm text-gray-600">@{user.login}</p>
+                  {user.location && (
+                    <p className="text-sm text-gray-500">📍 {user.location}</p>
+                  )}
+                  <p className="text-sm text-gray-500">
+                    🗂️ Public Repositories: {user.public_repos}
+                  </p>
+                  <a
+                    href={user.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline mt-2 inline-block"
+                  >
+                    Visit GitHub Profile
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
