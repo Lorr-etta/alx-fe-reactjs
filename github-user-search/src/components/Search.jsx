@@ -69,7 +69,7 @@ function Search() {
       </form>
 
       {loading && <p className="mt-4 text-gray-600">Loading...</p>}
-      {error && <p className="mt-4 text-red-600">Looks like we can't find any users.</p>}
+      {error && <p className="mt-4 text-red-600">Looks like we cant find any users.</p>}
 
       {userResults.length > 0 && (
         <div className="mt-6 space-y-6">
