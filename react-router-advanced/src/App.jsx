@@ -12,7 +12,7 @@ function App() {
       <nav>
         <Link to="/">Home</Link> |{" "}
         <Link to="/profile">Profile</Link> |{" "}
-        <Link to="/posts/1">Post 1</Link>
+        <Link to="/blog/1">Blog 1</Link>
       </nav>
 
       <Routes>
@@ -28,8 +28,8 @@ function App() {
           }
         />
 
-        {/* Dynamic Route */}
-        <Route path="/posts/:id" element={<BlogPost />} />
+        {/* Dynamic Route updated */}
+        <Route path="/blog/:id" element={<BlogPost />} />
 
         <Route path="/login" element={<Login />} />
       </Routes>
