@@ -2,21 +2,31 @@
 import React, { useState } from "react";
 
 const RegistrationForm = () => {
-  // separate states (not one object) so checker can find them
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState(""); // 
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!username || !email || !password) {
-      setError("All fields are required.");
+    if (!username) {
+      setErrors("Username is required");
       return;
     }
 
-    setError("");
+    if (!email) {              
+      setErrors("Email is required");
+      return;
+    }
+
+    if (!password) {            
+      setErrors("Password is required");
+      return;
+    }
+
+    setErrors(""); // clear errors if all good
+
     console.log("User registered:", { username, email, password });
 
     // mock API
@@ -33,13 +43,13 @@ const RegistrationForm = () => {
     <form onSubmit={handleSubmit}>
       <h2>Controlled Registration Form</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {errors && <p style={{ color: "red" }}>{errors}</p>}
 
       <input
         type="text"
         name="username"
         placeholder="Username"
-        value={username}              
+        value={username}        
         onChange={(e) => setUsername(e.target.value)}
       />
       <br />
@@ -48,7 +58,7 @@ const RegistrationForm = () => {
         type="email"
         name="email"
         placeholder="Email"
-        value={email}                 
+        value={email}          
         onChange={(e) => setEmail(e.target.value)}
       />
       <br />
@@ -57,7 +67,7 @@ const RegistrationForm = () => {
         type="password"
         name="password"
         placeholder="Password"
-        value={password}              
+        value={password}      
         onChange={(e) => setPassword(e.target.value)}
       />
       <br />
