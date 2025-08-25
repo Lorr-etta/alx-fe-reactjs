@@ -5,12 +5,12 @@ import TodoList from "../components/TodoList";
 test("renders initial todos", () => {
   render(<TodoList />);
   expect(screen.getByText("Learn React")).toBeInTheDocument();
-  expect(screen.getByText("Build a project")).toBeInTheDocument();
+  expect(screen.getByText("Build a Todo App")).toBeInTheDocument(); // match component text
 });
 
 test("adds a new todo", () => {
   render(<TodoList />);
-  const input = screen.getByPlaceholderText("Enter todo");
+  const input = screen.getByPlaceholderText("Add a todo..."); // match component
   const button = screen.getByText("Add");
 
   fireEvent.change(input, { target: { value: "New Todo" } });
@@ -28,10 +28,10 @@ test("toggles a todo", () => {
 
 test("deletes a todo", () => {
   render(<TodoList />);
-  const todo = screen.getByText("Build a project");
-  const deleteBtn = todo.nextSibling;
+  const todo = screen.getByText("Build a Todo App");
+  const deleteBtn = screen.getByText("Delete", { selector: "button" });
 
   fireEvent.click(deleteBtn);
 
-  expect(todo).not.toBeInTheDocument();
+  expect(screen.queryByText("Build a Todo App")).not.toBeInTheDocument();
 });
