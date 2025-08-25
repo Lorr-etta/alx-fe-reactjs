@@ -21,7 +21,6 @@ export default function PostsComponent() {
     ["posts"],
     fetchPosts,
     {
-      // ✅ Advanced React Query options
       cacheTime: 1000 * 60 * 5, // cache for 5 minutes
       staleTime: 1000 * 30,     // data is "fresh" for 30 seconds
       refetchOnWindowFocus: false, // don’t refetch when switching tabs
