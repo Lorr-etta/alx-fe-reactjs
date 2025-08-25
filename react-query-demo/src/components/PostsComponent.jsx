@@ -14,6 +14,7 @@ export default function PostsComponent() {
   const {
     data,
     isLoading,
+    isError,
     error,
     refetch,
     isFetching,
@@ -21,15 +22,15 @@ export default function PostsComponent() {
     ["posts"],
     fetchPosts,
     {
-      cacheTime: 1000 * 60 * 5, // cache for 5 minutes
-      staleTime: 1000 * 30,     // data is "fresh" for 30 seconds
-      refetchOnWindowFocus: false, // don’t refetch when switching tabs
-      keepPreviousData: true,      // keep old data while fetching new
+      cacheTime: 1000 * 60 * 5,
+      staleTime: 1000 * 30,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   );
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isError) return <p>Error: {error.message}</p>; // 
 
   return (
     <div>
