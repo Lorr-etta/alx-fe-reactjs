@@ -2,54 +2,46 @@
 import React from "react";
 import { useQuery } from "react-query";
 
-const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
-
-async function fetchPosts() {
-  const res = await fetch(POSTS_URL);
+const fetchPosts = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
   if (!res.ok) {
-    throw new Error(`Failed to fetch posts: ${res.status}`);
+    throw new Error("Network response was not ok");
   }
   return res.json();
-}
+};
 
 export default function PostsComponent() {
   const {
     data,
-    error,
     isLoading,
-    isFetching,
+    error,
     refetch,
-    isError,
-  } = useQuery(["posts"], fetchPosts);
+    isFetching,
+  } = useQuery(
+    ["posts"],
+    fetchPosts,
+    {
+      // ✅ Advanced React Query options
+      cacheTime: 1000 * 60 * 5, // cache for 5 minutes
+      staleTime: 1000 * 30,     // data is "fresh" for 30 seconds
+      refetchOnWindowFocus: false, // don’t refetch when switching tabs
+      keepPreviousData: true,      // keep old data while fetching new
+    }
+  );
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div style={{ marginTop: 16 }}>
-      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <h2 style={{ margin: 0 }}>Posts</h2>
-        {isFetching && <small>(refreshing…)</small>}
-        <button onClick={() => refetch()} style={{ marginLeft: "auto" }}>
-          Refetch Posts
-        </button>
-      </div>
-
-      {isLoading && <p>Loading posts…</p>}
-
-      {isError && (
-        <p style={{ color: "red" }}>
-          {(error && error.message) || "Something went wrong."}
-        </p>
-      )}
-
-      {data && (
-        <ul style={{ marginTop: 12 }}>
-          {data.slice(0, 10).map((post) => (
-            <li key={post.id} style={{ marginBottom: 8 }}>
-              <strong>{post.title}</strong>
-              <div style={{ opacity: 0.8 }}>{post.body}</div>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div>
+      <h2>Posts</h2>
+      {isFetching && <p>Refreshing data...</p>}
+      <button onClick={() => refetch()}>Refetch Posts</button>
+      <ul>
+        {data.map((post) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }
